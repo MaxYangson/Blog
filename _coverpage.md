@@ -7,4 +7,4 @@
 
 
 
-[快速开始](README.md)
+[快速开始](docs/README.md)
