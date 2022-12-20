@@ -117,7 +117,7 @@ server {
 
   ```sh
   index.html
-  README.md
+  readme.md
   ```
 
 - 创建 Dockerfile
@@ -135,7 +135,7 @@ server {
 
   ```sh
    index.html
-   README.md
+   readme.md
    Dockerfile
   ```
 

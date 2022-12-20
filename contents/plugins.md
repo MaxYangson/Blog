@@ -8,10 +8,10 @@
     search: 'auto', // default
 
     search : [
-      '/',            // => /README.md
+      '/',            // => /readme.md
       '/guide',       // => /guide.md
       '/get-started', // => /get-started.md
-      '/zh-cn/',      // => /zh-cn/README.md
+      '/zh-cn/',      // => /zh-cn/readme.md
     ],
 
     // complete configuration parameters
