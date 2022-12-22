@@ -16,3 +16,5 @@
 * [软件安装和使用](contents/sw_using/readme.md)
 * [Bug记录](contents/bug_record/readme.md)
 * [其他](contents/others/readme.md '博客搭建')
+  * [hexo使用教程](contents/others/hexo.md)
+  * [docsify使用教程](contents/others/docsify.md)
