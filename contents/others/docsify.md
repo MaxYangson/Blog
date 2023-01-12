@@ -7,6 +7,7 @@
 1.0、安装npm环境，详见教程 
 
 1.1、全局安装docsify-cli工具
+
 ```bash
 npm i docsify-cli -g  # 安装docsify-cli
 docsify -v  # 测试是否安装成功/查看版本
@@ -15,6 +16,7 @@ docsify -v  # 测试是否安装成功/查看版本
 1.2、初始化文档结构
 
 先创建一个本地文件夹docs，然后执行项目初始化命令
+
 ```bash
 docsify init ./docs
 ```
@@ -23,9 +25,9 @@ docsify init ./docs
 
 ```
 -| docs
-	 -| .nojekyll  用于阻止Github Pages 会忽略掉下滑线开头的文件
-	 -| index.html 入口文件
-	 -| README.md  作为主页内容渲染
+     -| .nojekyll  用于阻止Github Pages 会忽略掉下滑线开头的文件
+     -| index.html 入口文件
+     -| README.md  作为主页内容渲染
 ```
 
 1.3、启动项目
@@ -38,7 +40,6 @@ docsify serve docs
 
 1. README.md文件
 
-
 2. 预览效果：
 
 ## 常用配置
@@ -50,6 +51,7 @@ docsify项目配置主要修改相关md文件和index.html文件
 1、定制导航栏和侧边栏
 
 修改index.html文件中的script配置
+
 ```js
   <script>
     window.$docsify = {
@@ -73,6 +75,7 @@ docsify项目配置主要修改相关md文件和index.html文件
 ```
 
 在index.html文件的同级目录下，创建**_navbar.md**文件来配置顶部导航栏，内容也采用列表形式展示
+
 ```md
 * 项目地址
   * [GitHub地址](https://github.com/arenxiaolanz/docsify_study)
@@ -83,9 +86,11 @@ docsify项目配置主要修改相关md文件和index.html文件
 
 查看效果
 
-
 2、定制封面页
 在入口文件 index.html 中添加封面页的配置
+
+
+
 ```js
 <script>
   window.$docsify = {
@@ -95,6 +100,7 @@ docsify项目配置主要修改相关md文件和index.html文件
 ```
 
 同级目录下创建 _coverpage.md 文件配置封面页
+
 ```md
 <!-- _coverpage.md -->
 
@@ -124,10 +130,10 @@ window.$docsify = {
 };
 ```
 
-
 3、添加全文搜索
 
 在入口文件中添加全文搜索的配置
+
 ```js
   <script>
     window.$docsify = {
@@ -145,10 +151,10 @@ window.$docsify = {
  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
 ```
 
-
 4、添加代码高亮
 
 在入口文件index.html中添加下列代码
+
 ```js
 <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-php.min.js"></script>
@@ -157,12 +163,12 @@ window.$docsify = {
 5、添加一键拷贝代码
 
 1. 在入口文件中添加下列代码
-```js
-<script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
-```
+   
+   ```js
+   <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
+   ```
 
 6、添加页面内目录插件
-
 
 更多配置教程详见docsify官方教程[]
 
@@ -170,14 +176,11 @@ window.$docsify = {
 
 相关较好的开源项目推荐：
 
-
 ## 在GitHub/Gitee上部署文档网站
 
 1、提交代码到GitHub
 
-
 2、GitHub Pages 部署
-
 
 3、部署成功·
 
@@ -195,6 +198,5 @@ git push -u origin master
 ```
 
 ## 安装配置过程中相关问题
-
 
 <p style="text-align:right">Lastest Updated: {docsify-updated}</p>

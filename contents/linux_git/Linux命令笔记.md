@@ -2,8 +2,6 @@
 
 bash command [-options] [parameter] 
 
-
-
 ## 7个常见Linux命令：
 
 01  ls | list | 查看当前文件夹下的内容 
@@ -29,10 +27,6 @@ bash command [-options] [parameter]
 打包和压缩   tar 
 
 软件安装  apt-get
-
-
-
-
 
 ## 一、基本命令
 
@@ -63,15 +57,15 @@ man命令（命令说明书）
 
 在敲出 文件／目录／命令 的前几个字母之后，按下 tab 键 
 
-​	如果输入的没有歧义，系统会自动补全 
+​    如果输入的没有歧义，系统会自动补全 
 
-​	如果还存在其他 文件／目录／命令，再按一下 tab 键，系统会提示可能存在的命令 
+​    如果还存在其他 文件／目录／命令，再按一下 tab 键，系统会提示可能存在的命令 
 
 **小技巧**
 
-​	按 上／下 光标键可以在曾经使用过的命令之间来回切换 
+​    按 上／下 光标键可以在曾经使用过的命令之间来回切换 
 
-​	如果想要退出选择，并且不想执行当前选中的命令，可以按 ctrl + c 
+​    如果想要退出选择，并且不想执行当前选中的命令，可以按 ctrl + c 
 
 ### 2.1 目录切换 cd
 
@@ -86,8 +80,6 @@ cd -        切换到上次访问的目录
 绝对路径和相对路径：
 
 <img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20210817190116193.png" alt="image-20210817190116193" style="zoom:80%;" />
-
-
 
 ### 2.2 目录查看 ls [-al]
 
@@ -108,10 +100,6 @@ ls通配符
  ?  代表任意一个字符，至少 1 个 
  [] 表示可以匹配字符组中的任一一个  如[abc] | 匹配 a、b、c 中的 任意一个、 [a-f] | 匹配从 a 到 f 范围内的的任意一个字符
 ```
-
-
-
-
 
 ### 2.3 目录操作【增，删，改，查】
 
@@ -175,8 +163,6 @@ rm -rf /*    【自杀命令！慎用！慎用！慎用！】将根目录下的�
 
 注：如果文件不存在，则创建这个文件，如果文件已经存在，则修改文件的末次修改时间
 
-
-
 #### 3.1.2 删除文件 【删】 rm
 
 命令：rm -rf 文件名
@@ -185,6 +171,7 @@ rm -rf /*    【自杀命令！慎用！慎用！慎用！】将根目录下的�
 
 【vi编辑器的3种模式】
     基本上vi可以分为三种状态，分别是命令模式（command mode）、插入模式（Insert mode）和底行模式（last line mode），各模式的功能区分如下：
+
 1) 命令行模式（command mode）
       控制屏幕光标的移动，字符、字或行的删除，查找，移动复制某区段及进入Insert mode下，或者到 last line mode。
       命令行模式下的常用命令：
@@ -193,12 +180,12 @@ rm -rf /*    【自杀命令！慎用！慎用！慎用！】将根目录下的�
       【3】查找：/字符
       【4】进入编辑模式：i o a
       【5】进入底行模式：:
-      
+
 2) 编辑模式（Insert mode）
       只有在Insert mode下，才可以做文字输入，按「ESC」键可回到命令行模式。
       编辑模式下常用命令：
       【1】ESC 退出编辑模式到命令行模式；
-      
+
 3) 底行模式（last line mode）
      将文件保存或退出vi，也可以设置编辑环境，如寻找字符串、列出行号……等。
      底行模式下常用命令：
@@ -239,8 +226,6 @@ o:在光标所在行的下面另起一新行插入
 
 文件的查看命令：cat/more/less/tail
 
-
-
 cat：会一次显示所有的内容，适合查看内容较少的文本文件
 
 ```
@@ -249,10 +234,6 @@ cat：会一次显示所有的内容，适合查看内容较少的文本文件
 示例：使用cat查看/etc/sudo.conf文件          
 cat sudo.conf
 ```
-
-
-
-
 
 more：命令可以用于分屏显示文件内容，每次只显示一页内容，可用于查看内容较多的文件
 
@@ -268,21 +249,15 @@ q | 退出
 more sudo.conf
 ```
 
-
-
 less：翻页查看
 
 示例：使用less查看/etc/sudo.conf文件，可以使用键盘上的PgUp和PgDn向上    和向下翻页，q结束查看
 less sudo.conf
 
-
-
 tail：指定行数或者动态查看
 
 示例：使用tail -10 查看/etc/sudo.conf文件的后10行，Ctrl+C结束  
 tail -10 sudo.conf
-
-
 
 ### 3.2 其他命令
 
@@ -290,18 +265,16 @@ tail -10 sudo.conf
 
 ```
 01 | tree [目录名]      | 以树状图列出文件目录结构 
-	-d | 只显示目录
-	
-	
+    -d | 只显示目录
+
+
 02 | cp 源文件 目标文件  | 复制文件或者目录 
      -i | 覆盖文件前提示
      -r | 若给出的源文件是目录文件，则 cp 将递归复制该目录下的所有子目录和文件，目标文件必须为一个目录名
 
 03 | mv 源文件 目标文件   | 移动文件或者目录／文件或者目录重命名 
-	 -i | 覆盖文件前提示
+     -i | 覆盖文件前提示
 ```
-
-
 
 其他：
 
@@ -309,12 +282,12 @@ tail -10 sudo.conf
 echo  会在终端中显示参数指定的文字，通常会和 重定向 重 联合使用
 
 重定向 > 和 >>  
-	Linux 允许将命令执行结果 重定向到一个 文件文 
-	将本应显示在终端上的内容输出／追加到指定文件中
-	> 表示输出，会覆盖文件原有的内容 
-	>> 表示追加，会将内容追加到已有文件的末尾
-	
-	
+    Linux 允许将命令执行结果 重定向到一个 文件文 
+    将本应显示在终端上的内容输出／追加到指定文件中
+    > 表示输出，会覆盖文件原有的内容 
+    >> 表示追加，会将内容追加到已有文件的末尾
+
+
 管道 | 
     Linux 允许将一个命令的输出可以通过管道做为另一个命令的输入 
     可以理解现实生活中的管子，管子的一头塞东西进去，另一头取出来，这里 | 的左右分为两端，左端塞东西（写），右端取东西（读）
@@ -322,10 +295,6 @@ echo  会在终端中显示参数指定的文字，通常会和 重定向 重 �
     more：分屏显示内容 
     grep：在命令执行结果的基础上查询指定的文本
 ```
-
-
-
-
 
 ### 3.3 权限修改
 
@@ -339,17 +308,14 @@ rwx：r代表可读，w代表可写，x代表该文件是一个可执行文件�
 第三段（最后3位）：代表的是其他用户的权限
 
    421  421  421
--  rw-   ---     ---
+
+- rw-   ---     ---
 
 ```
 命令：chmod +x aaa.txt
 或者采用8421法
 命令：chmod 100 aaa.txt
 ```
-
-
-
-
 
 ## 四、压缩文件操作
 
@@ -373,8 +339,6 @@ v：显示运行过程
 f：指定文件名
 ```
 
-
-
 示例：打包并压缩/usr/tmp 下的所有文件 压缩后的压缩包指定名称为xxx.tar
 tar -zcvf ab.tar aa.txt bb.txt 
 或：tar -zcvf ab.tar  *
@@ -391,8 +355,6 @@ tar -zcvf ab.tar aa.txt bb.txt
 tar -xvf ab.tar -C /usr------C代表指定解压的位置
 
 <img src="https://img-blog.csdnimg.cn/20181108101123319.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzIzMzI5MTY3,size_16,color_FFFFFF,t_70" alt="img" style="zoom:80%;" />
-
-
 
 ## 五、查找命令
 
@@ -418,8 +380,6 @@ ps -ef | grep sshd | grep -v grep 查找指定服务进程，排除gerp身
 ps -ef | grep sshd -c 查找指定进程个数 
 ```
 
-
-
 ### 5.2 find
 
 find命令在目录结构中搜索文件，并对搜索结果执行指定的操作。 
@@ -436,8 +396,6 @@ find . -type d | sort   查找当前所有目录并排序
 find . -size +100M  查找当前目录大于100M的文件
 ```
 
-
-
 ### 5.3 locate
 
 locate 让使用者可以很快速的搜寻某个路径。默认每天自动更新一次，所以使用locate 命令查不到最新变动过的文件。为了避免这种情况，可以在使用locate之前，先使用updatedb命令，手动更新数据库。如果数据库中没有查询的数据，则会报出locate: can not stat () `/var/lib/mlocate/mlocate.db': No such file or directory该错误！updatedb即可！
@@ -452,8 +410,6 @@ locate /etc/sh 搜索etc目录下所有以sh开头的文件
 locate pwd 查找和pwd相关的所有文件
 ```
 
-
-
 ### 5.4 whereis
 
 whereis命令是定位可执行文件、源代码文件、帮助文件在文件系统中的位置。这些文件的属性应属于原始代码，二进制文件，或是帮助文件。
@@ -463,8 +419,6 @@ whereis命令是定位可执行文件、源代码文件、帮助文件在文件�
 ```
 whereis ls    将和ls文件相关的文件都查找出来
 ```
-
-
 
 ### 5.5 which
 
@@ -476,8 +430,6 @@ which命令的作用是在PATH变量指定的路径中，搜索某个系统命�
 which pwd  查找pwd命令所在路径 
 which java  查找path中java的路径 
 ```
-
-
 
 ## 六、su、sudo
 
@@ -517,8 +469,6 @@ hadoop  ALL=(ALL)   ALL
 hadoop  ALL=NOPASSWD:  /bin/ls, /bin/cat
 ```
 
-
-
 ## 七、软件安装
 
 apt 是 Advanced Packaging Tool，是 Linux 下的一款安装包管理工具
@@ -533,10 +483,6 @@ apt 是 Advanced Packaging Tool，是 Linux 下的一款安装包管理工具
 
 <img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20210817184905050.png" alt="image-20210817184905050" style="zoom:67%;" />
 
-
-
-
-
 ## 七、系统服务
 
 ```
@@ -549,8 +495,6 @@ chkconfig iptables off  --关闭iptables服务的开机自启动
 chkconfig iptables on  --开启iptables服务的开机自启动
 ```
 
-
-
 ## 八、网络管理
 
 ### 8.1 主机名配置
@@ -561,15 +505,11 @@ NETWORKING=yes
 HOSTNAME=node1
 ```
 
-
-
 ### 8.2 IP 地址配置
 
 ```
 [root@node1 ~]# vi /etc/sysconfig/network-scripts/ifcfg-eth0
 ```
-
-
 
 ### 8.3 域名映射
 
@@ -583,8 +523,6 @@ HOSTNAME=node1
 192.168.52.202  node2
 192.168.52.203  node3
 ```
-
-
 
 ## 九、定时任务指令crontab 配置
 
@@ -603,8 +541,6 @@ service crond start   ## 启动服务
 service crond stop    ## 关闭服务 
 service crond restart ## 重启服务
 ```
-
-
 
 ### 9.1 命令格式
 
@@ -639,8 +575,6 @@ crontab file [-u user] ## 用指定的文件替代目前的crontab
 crontab -l [-u user]  ## 列出用户目前的crontab
 crontab -e [-u user]  ## 编辑用户目前的crontab
 ```
-
-
 
 ### 9.2 配置说明、实例
 
@@ -685,11 +619,7 @@ crontab -e
 *  23-7/1    *   *   *   service httpd restart
 ```
 
-
-
 ## 十、其他命令
-
- 
 
 ### 10.2 查看进程：ps -ef
 
@@ -740,8 +670,6 @@ netstat -an：查看当前系统端口
  service iptables stop
 ```
 
-
-
 ### 10.9 修改文件权限
 
 命令：chmod 777
@@ -763,8 +691,6 @@ esc后:
 复制一行内容：y+y
 
 粘贴复制的内容：p
-
-
 
 ## 十一、Linux项目部署
 
@@ -886,8 +812,6 @@ flush privileges;
 
 /etc/init.d/iptables status
 
-
-
 ### 11.3 安装tomcat部署项目
 
 准备工作：将web项目打成war包，改名为ROOT.war
@@ -943,8 +867,6 @@ mkdir /ucenter/web
 
 <img src="https://img-blog.csdnimg.cn/20181108103523123.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzIzMzI5MTY3,size_16,color_FFFFFF,t_70" alt="img" style="zoom:67%;" />
 
-
-
 #### 11.3.3 部署用户管理项目
 
 1、上传usermanage.sql和ROOT.war到/ucenter/web
@@ -975,7 +897,7 @@ mkdir /ucenter/web
 
 注意事项：Centos环境下部署项目中文乱码问题解决方案
 
-    今天在一台新的CentOS机器上使用c3p0连接池操作mysql数据库出现中文乱码问题，具体表现为：查询时无中文乱码问题，写数据时中文乱码，查看了机器上数据库字符集也是UTF8，应该不会出现中文乱码才对，最后在c3p0配置文件中 jdbcUrl后加上：?useUnicode=true&amp;characterEncoding=UTF8 中文就不会乱码了。
+    今天在一台新的CentOS机器上使用c3p0连接池操作mysql数据库出现中文乱码问题，具体表现为：查询时无中文乱码问题，写数据时中文乱码，查看了机器上数据库字符集也是UTF8，应该不会出现中文乱码才对，最后在c3p0配置文件中 jdbcUrl后加上：?useUnicode=true&characterEncoding=UTF8 中文就不会乱码了。
 
 【C3P0配置文件】
 
@@ -984,14 +906,13 @@ mkdir /ucenter/web
 <c3p0-config>
   <default-config>
     <property name="driverClass">com.mysql.jdbc.Driver</property>
-	<property name="jdbcUrl">jdbc:mysql://localhost:3306/user_manager_yun6?useUnicode=true&amp;characterEncoding=UTF8 </property>
-	<property name="user">root</property>
-	<property name="password">root</property>
-	<property name="acquireIncrement">2</property>
-	<property name="initialPoolSize">5</property>
-	<property name="minPoolSize">1</property>
-	<property name="maxPoolSize">5</property>
+    <property name="jdbcUrl">jdbc:mysql://localhost:3306/user_manager_yun6?useUnicode=true&characterEncoding=UTF8 </property>
+    <property name="user">root</property>
+    <property name="password">root</property>
+    <property name="acquireIncrement">2</property>
+    <property name="initialPoolSize">5</property>
+    <property name="minPoolSize">1</property>
+    <property name="maxPoolSize">5</property>
   </default-config>
 </c3p0-config>
 ```
-
