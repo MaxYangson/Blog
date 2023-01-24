@@ -1,6 +1,6 @@
 最近公司的一个项目需要从go vendor依赖管理升级到go mod 管理模式，期间也出现过不少问题，借此机会重温学习了go的依赖管理模式，记录升级过程中遇到的部分问题。
 
-本文主要分为以下几个方面阐述：go的依赖管理、vendor升级mod模式、常见问题解决
+本文主要分为以下几个方面阐述：go的依赖管理、vendor升级mod以及常见的问题解决
 
 ## go依赖管理模式
 
@@ -53,7 +53,13 @@ src/
 
 dep 的定位是实验、探索如何管理版本，并不会直接集成到 Go 工具链，Go 核心团队会吸取 dep 使用经验与社区反馈，开发下一代包管理工具 modules，并于 2019/09/03 发布的 1.13 正式支持，并随之发布 Module Mirror, Index, Checksum，用于解决软件分发、中间人攻击等问题。
 
-### gomod模式
+### Go module模式
+
+> go module和vendor是两个冲突的设计，二者只能选一，不可混用。
+> 
+> - vendor依赖的是GOPATH，那么必须设置GOPATH
+> 
+> - module不使用GOPATH，那么可以不设置GOPATH，成为了一个可选项。
 
 Go modules机制在go 1.11中是experiment feature，按照Go的惯例，在新的experiment feature首次加入时，都会有一个特性开关，go modules也不例外，GO111MODULE这个临时的环境变量就是go module特性的experiment开关。
 
@@ -171,8 +177,6 @@ GOPATH 在不同平台上的安装路径
 | Windows 平台 | %USERPROFILE%/go | C:\Users\用户名\go |
 | Unix 平台    | $HOME/go         | /home/用户名/go    |
 
-
-
 代理地址
 
 > https://goproxy.cn  //七牛云赞助支持的开源代理
@@ -181,10 +185,76 @@ GOPATH 在不同平台上的安装路径
 > 
 > https://mirrors.aliyun.com/goproxy  //阿里云官方维护的go代理
 
+## vendor升级Go Module模式
 
+### 升级步骤：
 
-## vendor升级mod模式
+> 1. 首先在原有项目里直接删除 vendor 这个文件夹
+> 
+> 2. go mod init 生成go.mod文件
+> 
+> 3. go mod tidy 更新项目依赖文件，等待依赖下载完毕，自动生成go.sum文件
+> 
+> 4. 运行main.go启动项目会查看运行是否异常
 
+以上步骤中，对于一些较大的项目会有较多的依赖，因此步骤3更新依赖、步骤4启动项目可能会产生一些问题
 
+### 常见问题解决
 
-## 常见问题解决
+#### 依赖包下载失败
+
+1. 公司依赖包没有权限下载
+
+![](go依赖管理.assets/2023-01-12-14-20-36-3ef45378ca64253bc786af608ca69ae.png)
+
+go mod tidy和go get命令的底层都是使用相关代码管理工具拉取远程依赖包，如 Git、SVN、HG。对于公司级别的项目可能依赖很多公司内部的依赖包，作为新人可能对于这些依赖包没有相关git读取权限，因此导致下载依赖失败
+
+解决方法：
+
++ 配置git用户名和邮箱，开通该依赖包的git读取权限——至少是reporter权限
+
++ 替换成其他有权限的依赖包
+2. github依赖包连接失败
+
+这种情况比较常见，由于国内github时不时被墙的原因，github有时候连接不上
+
+解决方法：
+
++ 更换相关github代理ip地址
+
++ 多试几次，或者换个时间再试试
+
+#### 依赖包下载版本不对
+
+1. 依赖包版本下载的过新，或者需要指定特定版本的依赖
+
+解决方法：
+
++ go.mod文件中替换成指定版本依赖：
+  
+  ```
+  
+  ```
+
++ 使用go get下载特定版本依赖
+2. 依赖包地址更改，如git.apache.org/thrift合并到github中：github.com/apache/thrift
+
+3. 一些启动运行时异常，可能也是依赖包版本过新导致，如
+
+如果出现报错：
+
+google.golang.org/grpc/naming: looping trying to add package
+
+是因为grpc版本不一样，自动引入的是40版本
+
+google.golang.org/grpc v1.40.0 // indirect
+
+我们需要修改为： google.golang.org/grpc v1.37.0 
+
+然后替换掉：
+
+```
+replace google.golang.org/grpc v1.37.0 => google.golang.org/grpc v1.26.0require (<br>   github.com/chanxuehong/internal v0.0.0-20180430074813-85d6017afbc4 // indirect<br>   github.com/chanxuehong/rand v0.0.0-20201110082127-2f19a1bdd973 // indirect<br>   github.com/chanxuehong/uuid v0.0.0-20180430073920-75ab5e2d8298 // indirect<br>   github.com/coreos/etcd v3.3.25+incompatible // indirect<br>   github.com/coreos/go-semver v0.3.0 // indirect<br>   github.com/coreos/pkg v0.0.0-20180928190104-399ea9e2e55f // indirect<br>   github.com/garyburd/redigo v1.6.2 // indirect<br>   github.com/go-sql-driver/mysql v1.6.0 // indirect<br>   github.com/gogo/protobuf v1.3.2 // indirect<br>   github.com/goinggo/mapstructure v0.0.0-20140717182941-194205d9b4a9 // indirect<br>   github.com/golang/protobuf v1.5.2 // indirect<br>   github.com/google/uuid v1.3.0 // indirect<br>   github.com/honsty/cryptos v0.0.0-20180710074443-22ca856b9265 // indirect<br>   github.com/jinzhu/gorm v1.9.16 // indirect<br>   github.com/jtolds/gls v4.20.0+incompatible // indirect<br>   github.com/labstack/echo v3.3.10+incompatible // indirect<br>   github.com/labstack/gommon v0.3.0 // indirect<br>   go.uber.org/automaxprocs v1.4.0 // indirect<br>   go.uber.org/zap v1.19.1 // indirect<br>   golang.org/x/net v0.0.0-20210924054057-cf34111cab4d // indirect<br>   google.golang.org/grpc v1.37.0 // indirect<br>)
+```
+
+<p style="text-align:right">Lastest Updated: {docsify-updated}</p>
