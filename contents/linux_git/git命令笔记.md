@@ -64,15 +64,11 @@ export LC_ALL="zh_CN.UTF-8"
 5.创建本地仓库——git init
 要使用Git对我们的代码进行版本控制，首先需要创建本地仓库
 
-
 1）在电脑的任意位置创建一个空目录（例如test）作为我们的本地Git仓库
-
 
 2）进入这个目录中，点击右键打开Git bash窗口
 
-
 3）执行命令git init
-
 
 4）如果创建成功后可在文件夹下看到隐藏的.git目录
 
@@ -115,14 +111,17 @@ options
 --abbrev-commit 使得输出的commitId更简短
 --graph 以图的形式显示
 
+退出git log日志：
+跟vim退出方式一致，输出冒号 : + q
+
 
 版本回退
 作用：版本切换
 命令形式：git reset --hard commitID
-    commitID 可以使用 git-log 或 git log 指令查看
+    commitID 可以使用 git-log 或 git log 指令查看
 如何查看已经删除的记录？
-    git reflog
-    这个指令可以看到已经删除的提交记录
+    git reflog
+    这个指令可以看到已经删除的提交记录
 ```
 
 ## 分支指令
@@ -162,8 +161,6 @@ git branch -D b1 不做任何检查，强制删除
    冲突部分的内容处理如下所示：
 
 ![](git命令笔记.assets/2023-01-24-21-08-38-image.png)
-
-
 
 ## 远程仓库指令
 
@@ -269,13 +266,9 @@ git checkout 本地新分支名
 核心命令：
 git fetch 远程仓库别名 远程分支名
 git checkout -b 本地新分支名 远程仓库别名/远程分支名
-
-
 ```
 
 ------
-
-
 
 ## 开发中分支使用原则与流程
 
@@ -316,6 +309,12 @@ doc/**/*.pdf
 
 ## Idea中使用git
 
+
+
+参考资料：
+
+[黑马程序员--Git详细教程笔记（使用命令）（从安装到入土）_JAVA成神的博客-CSDN博客](https://blog.csdn.net/qq_58168493/article/details/122592304)
+
 ----------
 
-Lastest Updated: { docsify-updated}
+<p style="text-align:right">Lastest Updated: {docsify-updated}</p>
