@@ -1,22 +1,3 @@
-
-
-### 文章目录
-
-- [1 日志相关概念](#1__1)
-- - [1.1 日志的作用](#11__2)
-  - [1.2 日志的等级](#12__8)
-  - [1.3 logging 模块两种使用方式](#13_logging__18)
-- [2 使用 logging 提供的模块级别的函数](#2__logging__22)
-- - [2.1 logging 模块定义常用函数](#21_logging__23)
-  - [2.2 使用方式1：简单配置](#22_1_36)
-  - [2.3 使用方式2：使用 logging.basicConfig() 函数](#23_2_loggingbasicConfig__58)
-- [3 使用 Logging 日志系统的四大组件](#3__Logging__131)
-- - [3.1 Logger 类](#31_Logger__159)
-  - [3.2 Handler 类](#32_Handler__193)
-  - [3.3 Formater 类](#33_Formater__212)
-  - [3.4 Filter类（了解即可）](#34_Filter_227)
-  - [3.5 日志流处理简要流程](#35__238)
-
 # 1 日志相关概念
 
 ## 1.1 日志的作用
@@ -28,15 +9,34 @@
 
 ## 1.2 日志的等级
 
-| 等级       | 含义                                                |
-| -------- | ------------------------------------------------- |
-| DEBUG    | 最详细的日志信息，典型应用场景是问题诊断                              |
-| INFO     | 信息详细程度仅次于 DEBUG，通常只记录关键节点信息，用于确认一切都是按照我们预期的那样进行工作 |
-| WARNING  | 当某些不期望的事情发生时记录的信息（如，磁盘可用空间较低），但是此时应用程序还是正常运行的     |
-| ERROR    | 由于一个更严重的问题导致某些功能不能正常运行时记录的信                       |
-| CRITICAL | 当发生严重错误，导致应用程序不能继续运行时记录的信息                        |
+| 等级          | 含义                                                |
+| ----------- | ------------------------------------------------- |
+| DEBUG       | 最详细的日志信息，典型应用场景是问题诊断                              |
+| INFO        | 信息详细程度仅次于 DEBUG，通常只记录关键节点信息，用于确认一切都是按照我们预期的那样进行工作 |
+| WARNING（默认） | 当某些不期望的事情发生时记录的信息（如，磁盘可用空间较低），但是此时应用程序还是正常运行的     |
+| ERROR       | 由于一个更严重的问题导致某些功能不能正常运行时记录的信                       |
+| CRITICAL    | 当发生严重错误，导致应用程序不能继续运行时记录的信息                        |
 
-默认情况下，logging 模块将等级为 WARNING 及其以上的日志信息打印到控制台
+级别排序: CRITICAL > ERROR > WARNING > INFO > DEBUG
+
+默认情况下，logging 模块将等级为 WARNING 及其以上的日志信息打印到控制台，即默认输出warning、error、critical级别日志
+
+```python
+import logging as log
+
+if __name__ == '__main__':
+    log.debug(u"1")
+    log.info(u"2")
+    log.warning(u"3")
+    log.error(u"4")
+    log.critical(u"5")
+
+# WARNING:root:3
+# ERROR:root:4
+# CRITICAL:root:5
+```
+
+
 
 ## 1.3 logging 模块两种使用方式
 
@@ -87,9 +87,9 @@ ERROR:root:error in logging.log function
 
 ## 2.3 使用方式2：使用 logging.basicConfig() 函数
 
-使用 logging.basicConfig() 函数可以调整日志级别、输出格式等
+使用 logging.basicConfig() 函数可以调整日志组件的基础配置：如日志级别、输出格式等，函数内部可以传入多个配置的形参。
 
-logging.basicConfig() 函数说明
+logging.basicConfig() 函数内部可传递的配置形参说明
 
 | 参数名      | 描述                                                                                                                                                                        |
 | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -101,7 +101,7 @@ logging.basicConfig() 函数说明
 | style    | Python3.2 中新添加的配置项。指定 format 格式字符串的风格，可取值为 ‘%’、’{’ 和 ‘$’，默认为 ‘%’                                                                                                          |
 | handlers | Python 3.3 中新添加的配置项。该选项如果被指定，它应该是一个创建了多个 Handler 的可迭代对象，这些 handler 将会被添加到 rootlogger。需要说明的是：filename、stream 和 handlers 这三个配置项只能有一个存在，不能同时出现 2 个或 3 个，否则会引发 ValueError 异常。 |
 
-logging 模块的格式字符串
+logging 模块format形参的格式字符串：
 
 | 字段/属性名称         | 使用格式                | 描述                                                               |
 | --------------- | ------------------- | ---------------------------------------------------------------- |
@@ -153,8 +153,9 @@ logging.critical("critical")
 2020-11-22  19:18:58 Sun  root CRITICAL E:/prapy/python_project/testcase/test1.py 18 critical
 ```
 
-说明：
+特别说明：
 
+- logging.basicConfig**必须要在所有logging最前边**设置好，否者还是使用默认级别
 - logging.basicConfig() 函数是一个一次性的简单配置工具，也就是说只有在第一次调用该函数时会起作用，后续再次调用该函数时完全不会产生任何操作的，多次调用的设置并不是累加操作。
 - 日志器（Logger）是有层级关系的，上面调用的 logging 模块级别的函数所使用的日志器是 RootLogger 类的实例，其名称为 ‘root’，它是处于日志器层级关系最顶层的日志器，且该实例是以单例模式存在的。
 - 如果要记录的日志中包含变量数据，可使用一个格式字符串作为这个事件的描述消息（logging.debug、logging.info 等函数的第一个参数），然后将变量数据作为第二个参数 *args 的值进行传递，
@@ -169,7 +170,7 @@ WARNING:root:Tom is 10 years old.
 
 上面我们了解到了 logging.debug()、logging.info()、logging.warning()、logging.error()、logging.critical()（分别用以记录不同级别的日志信息），logging.basicConfig()（用默认日志格式（Formatter）为日志系统建立一个默认的流处理器（StreamHandler），设置基础配置（如日志级别等）并加到 root logger（根 Logger）中）这几个 logging 模块级别的函数。
 
-下面介绍第二种打印日志的方法，日志流处理，使用函数 logging.getLogger([name])（返回一个 logger 对象，如果没有指定名字将返回 root logger）。
+下面介绍第二种打印日志的方法——日志流处理，使用函数 logging.getLogger([name])（返回一个 logger 对象，如果没有指定名字将返回 root logger）。
 
 在介绍 logging 模块的日志流处理流程之前，我们先来介绍下 logging 模块的四大组件：
 
@@ -188,11 +189,11 @@ WARNING:root:Tom is 10 years old.
 - 每个处理器（handler）都可以设置自己的过滤器（filter）实现日志过滤，从而只保留感兴趣的日志；
 - 每个处理器（handler）都可以设置自己的格式器（formatter）实现同一条日志以不同的格式输出到不同的地方。
 
-简单点说就是：日志器（logger）是入口，真正干活儿的是处理器（[handler](https://so.csdn.net/so/search?q=handler&spm=1001.2101.3001.7020)），处理器（handler）还可以通过过滤器（filter）和格式器（formatter）对要输出的日志内容做过滤和格式化等处理操作。
+简单点说就是：日志器（logger）是入口，真正干活儿的是处理器（[handler](https://so.csdn.net/so/search?q=handler&spm=1001.2101.3001.7020)），处理器（handler）还可以通过过滤器（filter）、格式器（formatter）对要输出的日志内容做过滤和格式化等处理操作。
 
-**logging 日志模块相关类及其常用方法介绍**
 
-与 logging 四大组件相关的类：Logger, Handler, Filter, Formatter。
+
+下面对logging 四大组件相关的类：Logger, Handler, Filter, Formatter进行详细介绍。
 
 ## 3.1 Logger 类
 
@@ -202,7 +203,7 @@ Logger 对象有 3 个任务要做：
 2. 基于日志严重等级（默认的过滤设施）或 filter 对象来决定要对哪些日志进行后续处理；
 3. 将日志消息传送给所有感兴趣的日志 handlers。
 
-Logger 对象最常用的方法分为两类：配置方法和消息发送方法
+Logger 对象最常用的方法分为两类：配置方法、消息发送方法
 
 **Logger 类相关方法**
 
@@ -214,17 +215,70 @@ Logger 对象最常用的方法分为两类：配置方法和消息发送方法
 
 logger对象配置完成后，可以使用下面的方法来创建日志记录：
 
-| 方法                                                                                    | 描述                            |
-| ------------------------------------------------------------------------------------- | ----------------------------- |
-| Logger.debug(), Logger.info(), Logger.warning(),<br>Logger.error(), Logger.critical() | 创建一个与它们的方法名对应等级的日志记录          |
-| Logger.exception()                                                                    | 创建一个类似于 Logger.error() 的日志消息  |
-| Logger.log()                                                                          | 需要获取一个明确的日志 level 参数来创建一个日志记录 |
+| 方法                                                                                | 描述                            |
+| --------------------------------------------------------------------------------- | ----------------------------- |
+| Logger.debug(), Logger.info(), Logger.warning(),Logger.error(), Logger.critical() | 创建一个与它们的方法名对应等级的日志记录          |
+| Logger.exception()                                                                | 创建一个类似于 Logger.error() 的日志消息  |
+| Logger.log()                                                                      | 需要获取一个明确的日志 level 参数来创建一个日志记录 |
 
-一个 Logger 对象呢？一种方式是通过 Logger 类的实例化方法创建一个 Logger 类的实例，但是我们通常都是用第二种方式–logging.getLogger() 方法。
+**如何获取一个新的 Logger 对象呢？**
 
-logging.getLogger() 方法有一个可选参数 name，该参数表示将要返回的日志器的名称标识，如果不提供该参数，则其值为 ‘root’。若以相同的 name 参数值多次调用 getLogger() 方法，将会返回指向同一个 logger 对象的引用。
+
+
+```py
+1.一种方式是通过 Logger 类的实例化方法创建一个 Logger 类的实例（少用）
+
+2.通常使用第二种方式，即调用logging.getLogger() 方法获取Logger对象。
+log = logging.getLogger("loger1")
+说明：
+logging.getLogger() 有一个可选参数name，该参数表示将要返回的日志器的名称标识
+（如果不提供该参数，默认其值为 ‘root’）
+
+若以相同的name参数值多次调用getLogger() 方法，将会返回指向同一个logger对象的引用。
+```
+
+
 
 多次使用注意不能创建多个logger,否则会出现重复输出日志现象。
+
+```py
+import logging
+
+MY_FORMAT = "%(asctime)s %(name)s %(levelname)s %(pathname)s %(lineno)d %(message)s"  # 配置输出日志格式
+DATE_FORMAT = '%Y-%m-%d  %H:%M:%S %a '  #配置输出时间的格式
+
+if __name__ == '__main__':
+    # 如果增加以下的basicConfig()函数，会在my.log文件中记录重复日志
+    logging.basicConfig(
+        filename="my.log",  # 指定日志写入到文件
+        level=logging.INFO,
+        datefmt=DATE_FORMAT,
+        format=MY_FORMAT,
+    )
+   
+    # 创建logger，如果参数为空则返回 root logger
+    logger = logging.getLogger("mylogger")
+    logger.setLevel(logging.DEBUG)  # 设置logger日志等级
+
+    # 创建handler
+    fh = logging.FileHandler("test.log", encoding="utf-8")
+
+    # 设置输出日志格式, 注意 logging.Formatter的大小写
+    formatter = logging.Formatter(
+        fmt="%(asctime)s %(name)s %(filename)s %(message)s",
+        datefmt="%Y/%m/%d %X"
+    )
+    # 为handler指定输出格式，注意大小写
+    fh.setFormatter(formatter)
+    # 为logger添加的日志处理器
+    logger.addHandler(fh)
+    # 输出不同级别的log
+    logger.warning("warning message")
+    logger.info("info message")
+    logger.error("error message")
+```
+
+
 
 **关于logger的层级结构与有效等级的说明：**
 
@@ -287,13 +341,13 @@ filter 方法用于具体控制传递的 record 记录是否能通过过滤，�
 
 ## 3.5 日志流处理简要流程
 
-1、创建一个 logger  
-2、设置下 logger 的日志的等级  
-3、创建合适的 Handler(FileHandler 要有路径)  
-4、设置下每个 Handler 的日志等级  
-5、创建下日志的格式  
-6、向 Handler 中添加上面创建的格式  
-7、将上面创建的 Handler 添加到 logger 中  
+1、创建一个 logger 
+2、设置下 logger 的日志的等级 
+3、创建合适的 Handler(FileHandler 要有路径) 
+4、设置下每个 Handler 的日志等级 
+5、创建下日志的格式 
+6、向 Handler 中添加上面创建的格式 
+7、将上面创建的 Handler 添加到 logger 中 
 8、打印输出 logger.debug\logger.info\logger.warning\logger.error\logger.critical
 
 ```python
@@ -536,12 +590,6 @@ logger.log(level=logging.ERROR, msg="logger.log message")
 - 3）创建一个包含配置信息的dict，然后把它传递个`dictConfig()`函数；
 
 # 5 如何移除原配置方案 —— 解决重复记录日志问题
-
-
-
-
-
-
 
 # 参考文献：
 
