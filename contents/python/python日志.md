@@ -36,8 +36,6 @@ if __name__ == '__main__':
 # CRITICAL:root:5
 ```
 
-
-
 ## 1.3 logging 模块两种使用方式
 
 logging 模块有两种使用方式
@@ -191,8 +189,6 @@ WARNING:root:Tom is 10 years old.
 
 简单点说就是：日志器（logger）是入口，真正干活儿的是处理器（[handler](https://so.csdn.net/so/search?q=handler&spm=1001.2101.3001.7020)），处理器（handler）还可以通过过滤器（filter）、格式器（formatter）对要输出的日志内容做过滤和格式化等处理操作。
 
-
-
 下面对logging 四大组件相关的类：Logger, Handler, Filter, Formatter进行详细介绍。
 
 ## 3.1 Logger 类
@@ -223,8 +219,6 @@ logger对象配置完成后，可以使用下面的方法来创建日志记录�
 
 **如何获取一个新的 Logger 对象呢？**
 
-
-
 ```py
 1.一种方式是通过 Logger 类的实例化方法创建一个 Logger 类的实例（少用）
 
@@ -237,32 +231,21 @@ logging.getLogger() 有一个可选参数name，该参数表示将要返回的�
 若以相同的name参数值多次调用getLogger() 方法，将会返回指向同一个logger对象的引用。
 ```
 
-
-
-多次使用注意不能创建多个logger,否则会出现重复输出日志现象。
+多次使用注意不能创建多个logger,否则会出现重复输出日志现象。——原理见下面" logger层级结构和有效等级 " 中第三条。
 
 ```py
 import logging
 
-MY_FORMAT = "%(asctime)s %(name)s %(levelname)s %(pathname)s %(lineno)d %(message)s"  # 配置输出日志格式
-DATE_FORMAT = '%Y-%m-%d  %H:%M:%S %a '  #配置输出时间的格式
-
 if __name__ == '__main__':
-    # 如果增加以下的basicConfig()函数，会在my.log文件中记录重复日志
-    logging.basicConfig(
-        filename="my.log",  # 指定日志写入到文件
-        level=logging.INFO,
-        datefmt=DATE_FORMAT,
-        format=MY_FORMAT,
-    )
-   
     # 创建logger，如果参数为空则返回 root logger
-    logger = logging.getLogger("mylogger")
+    logger = logging.getLogger()  # 获取的是root logger
+    logger2 = logging.getLgger("logger2")  # 获取的是root logger的chilren logger
     logger.setLevel(logging.DEBUG)  # 设置logger日志等级
+    logger2.setLevel(logging.DEBUG)
 
     # 创建handler
     fh = logging.FileHandler("test.log", encoding="utf-8")
-
+    fh2 = logging.FileHandler("test2.log", encoding="utf-8")
     # 设置输出日志格式, 注意 logging.Formatter的大小写
     formatter = logging.Formatter(
         fmt="%(asctime)s %(name)s %(filename)s %(message)s",
@@ -270,21 +253,31 @@ if __name__ == '__main__':
     )
     # 为handler指定输出格式，注意大小写
     fh.setFormatter(formatter)
+    fh2.setFormatter(formatter)
     # 为logger添加的日志处理器
     logger.addHandler(fh)
-    # 输出不同级别的log
+    logger2.addHandler(fh2)
+
+    # 使用logger输出不同级别的日志，下面三条日志只会在test.log中记录
     logger.warning("warning message")
     logger.info("info message")
     logger.error("error message")
+
+    # 使用logger2输出不同级别的日志，实际上会发生重复记录（即在test.log和test2.log都能看到这三条记录），因为logger2是root logger的子logger
+    logger2.warning("warning message——logger2")
+    logger2.info("info message——logger2")
+    logger2.error("error message——logger2")
 ```
 
+另一种重复日志的情况：[(33条消息) 深度剖析 Python 日志重复打印问题_I believe I can fly~的博客-CSDN博客_python日志重复打印](https://blog.csdn.net/qq_31455841/article/details/127889511)
 
+原因：同一个logger重复加了多个handler
 
 **关于logger的层级结构与有效等级的说明：**
 
 - logger的名称是一个以 ‘.’ 分割的层级结构，每个 ‘.’ 后面的 logger 都是 ‘.’ 前面的 logger 的 children，例如，有一个名称为 foo 的 logger，其它名称分别为 foo.bar, foo.bar.baz 和 foo.bam 都是 foo 的后代。
 - logger 有一个"有效等级（effective level）"的概念。如果一个 logger 上没有被明确设置一个 level，那么该 logger 就是使用它 parent 的 level；如果它的 parent 也没有明确设置 level 则继续向上查找 parent 的 parent 的有效 level，依次类推，直到找到个一个明确设置了 level 的祖先为止。需要说明的是，root logger 总是会有一个明确的 level 设置（默认为 WARNING）。当决定是否去处理一个已发生的事件时，logger 的有效等级将会被用来决定是否将该事件传递给该 logger 的 handlers 进行处理。
-- child loggers 在完成对日志消息的处理后，默认会将日志消息传递给与它们的祖先 loggers 相关的 handlers。因此，我们不必为一个应用程序中所使用的所有 loggers 定义和配置 handlers，只需要为一个顶层的 logger 配置 handlers，然后按照需要创建 child loggers 就可足够了。我们也可以通过将一个 logger 的 propagate 属性设置为 False 来关闭这种传递机制。
+- child loggers 在完成对日志消息的处理后，默认会将日志消息传递给与它们的祖先 loggers 相关的 handlers。因此，我们不必为一个应用程序中所使用的所有 loggers 定义和配置 handlers，只需要为一个顶层的 logger 配置 handlers，然后按照需要创建 child loggers 就可足够了。我们也可以通过将一个 logger 的 propagate 属性设置为 False 来关闭这种传递机制。——第一种重复日志现象发生的原因。
 
 ## 3.2 Handler 类
 
@@ -589,9 +582,21 @@ logger.log(level=logging.ERROR, msg="logger.log message")
 - 2）创建一个日志配置文件，然后使用`fileConfig()`函数来读取该文件的内容；
 - 3）创建一个包含配置信息的dict，然后把它传递个`dictConfig()`函数；
 
+参考资料：
+
+[(76条消息) python之logging配置日志的三种方式_蜗牛style的博客-CSDN博客_python logging](https://blog.csdn.net/SnailPace/article/details/125144289)
+
 # 5 如何移除原配置方案 —— 解决重复记录日志问题
 
-# 参考文献：
+大体方法：
+
+1， 移除原来root logger中的handler；——logging.removeHandler()
+
+2， 不使用root logger，使用两个同级别的children logger，在不同地方记录不同日志；
+
+具体举例说明待完善。。。
+
+# 参考资料
 
 [(76条消息) python 日志 logging 模块详解_-出发-的博客-CSDN博客](https://blog.csdn.net/happyjacob/article/details/109922504)
 
